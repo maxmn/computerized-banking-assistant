@@ -6,12 +6,12 @@
 }
 
 textarea {
-   width: 500px;
+   width: 750px;
    height: 100%;
  }
 
-#name {
-   width: 200px;
+ #prolog_query_textinput, #english_query_textinput {
+   width: 250px;
    height: 23px;
    margin: 5px;
 }
@@ -22,4 +22,10 @@ textarea {
 
 #result {
    margin: 5px;
+}
+
+#query_div {
+   display: flex;
+   flex-direction: column;
+   margin: 55px;
 }

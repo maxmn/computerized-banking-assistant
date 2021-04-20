@@ -271,13 +271,30 @@ function clickButton() {
   sentence_query(name);
 }
 
+function click_english_button() {
+  var txt = document.getElementById("english_query_textinput").value;
+  sentence_query(txt);
+}
+
+function click_prolog_button() {
+  var txt = document.getElementById("prolog_query_textinput").value;
+  prolog_query(txt);
+}
+
 // Enter is pressed while in query textbox
 function enter_key_pressed() {
-  query_textbox = document.getElementById("name");
+  english_query_input = document.getElementById("english_query_textinput");
+  prolog_query_input = document.getElementById("prolog_query_textinput");
 
-  query_textbox.onkeyup = function(e){
+  english_query_input.onkeyup = function(e){
     if(e.keyCode == 13){    // If key == Enter
-      clickButton();
+      click_english_button();
+    }
+  }
+
+  prolog_query_input.onkeyup = function(e){
+    if(e.keyCode == 13){    // If key == Enter
+      click_prolog_button();
     }
   }
 }

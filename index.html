@@ -4,13 +4,11 @@
 
 <!-- Textbox that holds Prolog program -->
 <textarea id="program" spellcheck="false">
-/*
-Anthony Greco   500903364   Section 2
-Nguyen Hong Duc 500910998   Section 4
-Kirill Shmakov  500890293   Section 2
-*/
-
+/*****************************************************/
+/** 'not' must be replaced with '\+' for Tau Prolog **/
+/*****************************************************/
 /***************** START OF DATABASE *****************/
+/*****************************************************/
 account(1,ann,td,2505).
 account(2,robert,rbc,1001).
 account(3,anthony,bmo,10503).
@@ -86,15 +84,21 @@ person(P) :- lives(P,_).
 country(C) :- location(_,C), \+ city(C).
 
 gender(ann,female). gender(samantha,female). 
-gender(nicole,female). gender(robert,male). gender(anthony,male). gender(george,male). gender(matthew,male). gender(bob,male). 
-gender(david,male). gender(sebastian,male). gender(marcos,male). gender(thomas,male). gender(lucas,male).
-/***************** END OF DATABASE *****************/
+gender(robert,male). gender(anthony,male). 
+gender(george,male). gender(matthew,male). 
+gender(david,male). gender(sebastian,male). 
+gender(marcos,male). gender(thomas,male). 
+gender(lucas,male). gender(nicole,female).
+gender(bob,male). 
+/*****************************************************/
+/****************** END OF DATABASE ******************/
+/*****************************************************/
 
 
-
-
-/***************** START OF LEXICON *****************/
-article(a). article(an). article(any). 
+/*****************************************************/
+/***************** START OF LEXICON ******************/
+/*****************************************************/
+article(a). article(an). article(any). article(the).
 
 common_noun(bank,X) :- bank(X).
 common_noun(city,X) :- city(X).
@@ -133,10 +137,12 @@ common_noun(american,X) :- lives(X,City), location(City, usa).
 /* person IN bank      */ preposition(in,X,Y) :- account(_,X,Y,_).
 
 /* person WITH account */ preposition(with,X,Y) :- account(Y,X,_,_).
+/* person WITH balance */ preposition(with,X,Y) :- account(_,X,_,Y).
 /* bank WITH account   */ preposition(with,X,Y) :- account(Y,_,X,_).
 /* city WITH bank      */ preposition(with,X,Y) :- city(X), location(Y,X).
 /* bank WITH person    */ preposition(with,X,Y) :- account(_,Y,X,_).
 /* account WITH balance*/ preposition(with,X,Y) :- account(X,_,_,Y).
+/* account WITH bank   */ preposition(with,X,Y) :- account(X,_,Y,_).
 
 proper_noun(City) :- city(City).
 proper_noun(Country) :- country(Country).
@@ -166,23 +172,28 @@ adjective(large,X) :- account(X,_,_,B), B > 10000.
 adjective(large,B) :- account(_,_,_,B), B > 10000.
 adjective(old,X) :- created(X,_,_,_,Year), Year < 2020.
 adjective(recent,X) :- created(X,_,_,_,2020).
+adjective(biggest,X) :- adjective(largest,X).
+adjective(greatest,X) :- adjective(largest,X).
+adjective(largest,X) :- account(X,_,_,B), \+ (account(X2,_,_,B2), \+ X=X2,  B2 > B).
+adjective(largest,X) :- account(_,_,_,X), \+ (account(_,_,_,X2), \+ X=X2,  X2 > X).
+adjective(smallest,X) :- account(X,_,_,B), \+ (account(X2,_,_,B2), \+ X=X2,  B2 < B).
+adjective(smallest,X) :- account(_,_,_,X), \+ (account(_,_,_,X2), \+ X=X2,  X2 < X).
 
-/***************** END OF LEXICON *****************/
+/*****************************************************/
+/****************** END OF LEXICON *******************/
+/*****************************************************/
 
 
-
-
-
-
-
-
-/***************** START OF PARSER *****************/
+/*****************************************************/
+/****************** START OF PARSER ******************/
+/*****************************************************/
 what(Words, Ref) :- np(Words, Ref).
+
 /* Noun phrase can be a proper name or can start with an article */
 
 np([Name],Name) :- proper_noun(Name).
-np([Art|Rest], Who) :- \+ Art=the, article(Art), np2(Rest, Who).
-np([the|Rest], Who) :- np2(Rest, Who), \+ (np2(Rest,Who2), \+ Who=Who2).
+np([Art|Rest], Who) :- article(Art), np2(Rest, Who).
+/* np([the|Rest], Who) :- np2(Rest, Who), \+ (np2(Rest,Who2), \+ Who=Who2). */
 
 /* If a noun phrase starts with an article, then it must be followed
     by another noun phrase that starts either with an adjective
@@ -208,33 +219,53 @@ prepPhrase([Prep|Rest], Who) :-
 
 appendLists([], L, L).
 appendLists([H|L1], L2, [H|L3]) :-  appendLists(L1, L2, L3).
-
-/***************** END OF PARSER *****************/
+/*****************************************************/
+/******************* END OF PARSER *******************/
+/*****************************************************/
 </textarea>
 
-<div id="right-div">
-  <!-- Enter name input -->
-  <div id="textinput_and_button">
+<div id="query_div">
+  <!-- English query -->
+  <div>
     <input  spellcheck="false" 
             type="text" 
-            id="name" 
+            id="english_query_textinput" 
             value="" 
-            placeholder="Enter a name"
+            placeholder="Enter an English sentence query."
             autocomplete="off"
     />
 
-    <!-- Button -->
+    <!-- English Button -->
     <input  class="example-button" 
     type="button" 
     value="Run" 
     id="button" 
-    onClick="clickButton();" 
+    onClick="click_english_button();" 
+    />
+  </div>
+  <!-- Prolog query -->
+  <div>
+    <input  spellcheck="false" 
+            type="text" 
+            id="prolog_query_textinput" 
+            value="" 
+            placeholder="Enter a Prolog query."
+            autocomplete="off"
+    />
+  
+    <!-- Prolog Button -->
+    <input  class="example-button" 
+    type="button" 
+    value="Run" 
+    id="button" 
+    onClick="click_prolog_button();" 
     />
   </div>
 
   <!-- Results div -->
   <div class="example-result" id="result"></div>
 </div>
+
 
 </div> <!-- Close Flexbox -->
 

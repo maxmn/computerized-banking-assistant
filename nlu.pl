@@ -1,6 +1,8 @@
-/* not must be replaced with \+ for Tau Prolog */
-
+/*****************************************************/
+/** 'not' must be replaced with '\+' for Tau Prolog **/
+/*****************************************************/
 /***************** START OF DATABASE *****************/
+/*****************************************************/
 account(1,ann,td,2505).
 account(2,robert,rbc,1001).
 account(3,anthony,bmo,10503).
@@ -75,16 +77,22 @@ city(X) :- location(X,_), \+ bank(X).
 person(P) :- lives(P,_).
 country(C) :- location(_,C), \+ city(C).
 
-gender(ann,female). gender(samantha,female). gender(nicole,female).
-gender(robert,male). gender(anthony,male). gender(george,male). gender(matthew,male). gender(bob,male). 
-gender(david,male). gender(sebastian,male). gender(marcos,male). gender(thomas,male). gender(lucas,male).
-/***************** END OF DATABASE *****************/
+gender(ann,female). gender(samantha,female). 
+gender(robert,male). gender(anthony,male). 
+gender(george,male). gender(matthew,male). 
+gender(david,male). gender(sebastian,male). 
+gender(marcos,male). gender(thomas,male). 
+gender(lucas,male). gender(nicole,female).
+gender(bob,male). 
+/*****************************************************/
+/****************** END OF DATABASE ******************/
+/*****************************************************/
 
 
-
-
-/***************** START OF LEXICON *****************/
-article(a). article(an). article(any). 
+/*****************************************************/
+/***************** START OF LEXICON ******************/
+/*****************************************************/
+article(a). article(an). article(any). article(the).
 
 common_noun(bank,X) :- bank(X).
 common_noun(city,X) :- city(X).
@@ -123,10 +131,12 @@ common_noun(american,X) :- lives(X,City), location(City, usa).
 /* person IN bank      */ preposition(in,X,Y) :- account(_,X,Y,_).
 
 /* person WITH account */ preposition(with,X,Y) :- account(Y,X,_,_).
+/* person WITH balance */ preposition(with,X,Y) :- account(_,X,_,Y).
 /* bank WITH account   */ preposition(with,X,Y) :- account(Y,_,X,_).
 /* city WITH bank      */ preposition(with,X,Y) :- city(X), location(Y,X).
 /* bank WITH person    */ preposition(with,X,Y) :- account(_,Y,X,_).
 /* account WITH balance*/ preposition(with,X,Y) :- account(X,_,_,Y).
+/* account WITH bank   */ preposition(with,X,Y) :- account(X,_,Y,_).
 
 proper_noun(City) :- city(City).
 proper_noun(Country) :- country(Country).
@@ -156,44 +166,53 @@ adjective(large,X) :- account(X,_,_,B), B > 10000.
 adjective(large,B) :- account(_,_,_,B), B > 10000.
 adjective(old,X) :- created(X,_,_,_,Year), Year < 2020.
 adjective(recent,X) :- created(X,_,_,_,2020).
+adjective(biggest,X) :- adjective(largest,X).
+adjective(greatest,X) :- adjective(largest,X).
+adjective(largest,X) :- account(X,_,_,B), \+ (account(X2,_,_,B2), \+ X=X2,  B2 > B).
+adjective(largest,X) :- account(_,_,_,X), \+ (account(_,_,_,X2), \+ X=X2,  X2 > X).
+adjective(smallest,X) :- account(X,_,_,B), \+ (account(X2,_,_,B2), \+ X=X2,  B2 < B).
+adjective(smallest,X) :- account(_,_,_,X), \+ (account(_,_,_,X2), \+ X=X2,  X2 < X).
 
-/***************** END OF LEXICON *****************/
+/*****************************************************/
+/****************** END OF LEXICON *******************/
+/*****************************************************/
 
 
-
-
-/***************** START OF PARSER *****************/
+/*****************************************************/
+/****************** START OF PARSER ******************/
+/*****************************************************/
 what(Words, Ref) :- np(Words, Ref).
 
 /* Noun phrase can be a proper name or can start with an article */
 
 np([Name],Name) :- proper_noun(Name).
-np([Art|Rest], Who) :- \+ Art=the, article(Art), np2(Rest, Who).
-np([the|Rest], Who) :- np2(Rest, Who), \+ (np2(Rest,Who2), \+ Who=Who2).
+np([Art|Rest], Who) :- article(Art), np2(Rest, Who).
+/* np([the|Rest], Who) :- np2(Rest, Who), \+ (np2(Rest,Who2), \+ Who=Who2). */
 
 /* If a noun phrase starts with an article, then it must be followed
-   by another noun phrase that starts either with an adjective
-   or with a common noun. */
+    by another noun phrase that starts either with an adjective
+    or with a common noun. */
 
 np2([Adj|Rest],Who) :- adjective(Adj,Who), np2(Rest, Who).
 np2([Noun|Rest], Who) :- common_noun(Noun, Who), mods(Rest,Who).
 
 /* Modifier(s) provide an additional specific info about nouns.
-   Modifier can be a prepositional phrase followed by none, one or more
-   additional modifiers.  */
+    Modifier can be a prepositional phrase followed by none, one or more
+    additional modifiers.  */
 
 mods([], _).
 mods(Words, Who) :-
-	appendLists(Start, End, Words),
-	prepPhrase(Start, Who),	mods(End, Who).
+  appendLists(Start, End, Words),
+  prepPhrase(Start, Who),	mods(End, Who).
 
 prepPhrase([between,X,and,Y], B) :- 
-   number(X), number(Y), B >= X, B =< Y.
+    number(X), number(Y), B >= X, B =< Y.
 
 prepPhrase([Prep|Rest], Who) :-
-	preposition(Prep, Who, Ref), np(Rest, Ref).
+  preposition(Prep, Who, Ref), np(Rest, Ref).
 
 appendLists([], L, L).
 appendLists([H|L1], L2, [H|L3]) :-  appendLists(L1, L2, L3).
-
-/***************** END OF PARSER *****************/
+/*****************************************************/
+/******************* END OF PARSER *******************/
+/*****************************************************/
