@@ -11,13 +11,13 @@ textarea {
  }
 
 #name {
+   width: 200px;
    height: 23px;
    margin: 5px;
 }
 
 #button {
    height: 23px;
-   margin: 5px;
 }
 
 #result {

@@ -1,8 +1,4 @@
-/*
-Anthony Greco   500903364   Section 2
-Nguyen Hong Duc 500910998   Section 4
-Kirill Shmakov  500890293   Section 2
-*/
+/* not must be replaced with \+ for Tau Prolog */
 
 /***************** START OF DATABASE *****************/
 account(1,ann,td,2505).
@@ -75,9 +71,9 @@ location(seattle,usa).
 location(losAngeles,usa).
 
 bank(B) :- account(_,_,B,_).
-city(X) :- location(X,_), not bank(X).
+city(X) :- location(X,_), \+ bank(X).
 person(P) :- lives(P,_).
-country(C) :- location(_,C), not city(C).
+country(C) :- location(_,C), \+ city(C).
 
 gender(ann,female). gender(samantha,female). gender(nicole,female).
 gender(robert,male). gender(anthony,male). gender(george,male). gender(matthew,male). gender(bob,male). 
@@ -166,18 +162,14 @@ adjective(recent,X) :- created(X,_,_,_,2020).
 
 
 
-
-
-
-
 /***************** START OF PARSER *****************/
 what(Words, Ref) :- np(Words, Ref).
 
 /* Noun phrase can be a proper name or can start with an article */
 
 np([Name],Name) :- proper_noun(Name).
-np([Art|Rest], Who) :- not Art=the, article(Art), np2(Rest, Who).
-np([the|Rest], Who) :- np2(Rest, Who), not (np2(Rest,Who2), not Who=Who2).
+np([Art|Rest], Who) :- \+ Art=the, article(Art), np2(Rest, Who).
+np([the|Rest], Who) :- np2(Rest, Who), \+ (np2(Rest,Who2), \+ Who=Who2).
 
 /* If a noun phrase starts with an article, then it must be followed
    by another noun phrase that starts either with an adjective

@@ -72,6 +72,7 @@ adjective(recent,X) :- created(X,_,_,_,2020).\
 
 var parser = 
 'what(Words, Ref) :- np(Words, Ref).\
+\naccount(15,ann,metro_credit_union,891110952800).\n\
 np([Name],Name) :- proper_noun(Name).\
 np([Art|Rest], Who) :- not Art=the, article(Art), np2(Rest, Who).\
 np([the|Rest], Who) :- np2(Rest, Who), not (np2(Rest,Who2), not Who=Who2).\
@@ -109,30 +110,12 @@ String.prototype.format = function () {
  */
 function get_prolog_code() {
   database = document.getElementById("program").value;
-  return database + lexicon + parser  
+  return database  
 }
 
 /**************************************************************************************************************
 ***  Answer/Callback Functions
 ***************************************************************************************************************/
-
-// Callback function
-function likes_show(name) {
-  // Get output container
-  var result = document.getElementById("result");
-  // Return callback function
-  return function(answer) {
-    // Valid answer
-    if(pl.type.is_substitution(answer)) {
-      // Get the value of the food
-      var food = answer.lookup("X");
-      // Get the person
-      var person = name != "Y" ? name : answer.lookup("Y");
-      // Show answer
-      result.innerHTML = result.innerHTML + "<div>" + person + " likes " + food + "</div>";
-    }
-  };
-}
 
 // Callback function
 function account_show(name) {
@@ -172,27 +155,38 @@ function bank_show(name) {
   };
 }
 
-/**************************************************************************************************************
-***  Functions to consult Prolog code
-***************************************************************************************************************/
-  
-// Show the likes of a person
-function likes(name) {
-  // Create session
-  var session = pl.create(1000);
-  // Get program
-  var program = get_prolog_code();
-  // Clear output
-  document.getElementById("result").innerHTML = "";
-  // Consult program
-  session.consult(program);
-  // Query goal
-  var string_query = 'likes({}, X).'.format(name);
-  session.query(string_query);
-  // Find answers
-  session.answers(likes_show(name), 1000);
+function prolog_query_show() {
+  // Get output container
+  var result = document.getElementById("result");
+  // Return callback function
+  return function(answer) {
+    // Valid answer
+    if(pl.type.is_substitution(answer)) {
+      var val = answer.lookup("X");
+      // Show answer
+      result.innerHTML = result.innerHTML + "<div>" + val + "</div>";
+    }
+  };
 }
 
+function sentence_query_show() {
+  // Get output container
+  var result = document.getElementById("result");
+  // Return callback function
+  return function(answer) {
+    // Valid answer
+    if(pl.type.is_substitution(answer)) {
+      var val = answer.lookup("X");
+      // Show answer
+      result.innerHTML = result.innerHTML + "<div>" + val + "</div>";
+    }
+  };
+}
+
+/**************************************************************************************************************
+***  Functions to consult Prolog code *************************************************************************
+***************************************************************************************************************/
+  
 // Show the account of a person
 function account(name) {
   // Create session
@@ -207,7 +201,7 @@ function account(name) {
   var string_query = 'account(Id, {}, Bank, Amount).'.format(name);
   session.query(string_query);
   // Find answers
-  session.answers(account_show(name), 1000);
+  session.answers(account_show(name));
 }
 
 // Check if bank exists
@@ -224,7 +218,45 @@ function bank(bank_name) {
   var string_query = 'bank({}).'.format(bank_name);
   session.query(string_query);
   // Find answers
-  session.answers(bank_show(bank_name), 1000);
+  session.answers(bank_show(bank_name));
+}
+
+// Run user prolog query
+function prolog_query(name) {
+  // Create session
+  var session = pl.create();
+  // Get program
+  var program = get_prolog_code();
+  // Clear output
+  document.getElementById("result").innerHTML = "";
+  // Consult program
+  session.consult(program);
+  // Query goal
+  //var string_query = 'location(X, canada).';
+  var string_query = name;
+  session.query(string_query);
+  // Find answers
+  session.answers(prolog_query_show());
+}
+
+function sentence_query(query) {
+  query_list = query.split(" ");
+  query = query_list.join(",");
+  query = '[' + query + ']';
+
+  // Create session
+  var session = pl.create(1000);
+  // Get program
+  var program = get_prolog_code();
+  // Clear output
+  document.getElementById("result").innerHTML = "";
+  // Consult program
+  session.consult(program);
+  // Query goal
+  var string_query = 'what({}, X).'.format(query);
+  session.query(string_query);
+  // Find answers
+  session.answers(sentence_query_show(query));
 }
 
 /**************************************************************************************************************
@@ -236,9 +268,7 @@ function clickButton() {
   // Get person
   var name = document.getElementById("name").value;
   name = name != "" ? name : "Y";
-  // Get likes
-  //likes(name);
-  bank(name);
+  sentence_query(name);
 }
 
 // Enter is pressed while in query textbox
@@ -247,21 +277,12 @@ function enter_key_pressed() {
 
   query_textbox.onkeyup = function(e){
     if(e.keyCode == 13){    // If key == Enter
-      var name = query_textbox.value;
-      name = name != "" ? name : "Y";
-      bank(name);
+      clickButton();
     }
   }
 }
 
 enter_key_pressed();
-
-// onChange #name
-//function changeName() {
-//  var name = document.getElementById("name").value;
-//  document.getElementById("button").value = name != "" ? "What does " + name  + " like?" : "See all likes";
-//}
-//changeName();
 
 /**************************************************************************************************************
 ***************************************************************************************************************
