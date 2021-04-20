@@ -90,9 +90,9 @@ gender(david,male). gender(sebastian,male). gender(marcos,male). gender(thomas,m
   <input  class="example-textinput example-goal" 
           type="text" 
           id="name" 
-          onKeyup="changeName();" 
           value="" 
           placeholder="Enter a name"
+          autocomplete="off"
   />
 
   <!-- Results div -->
@@ -102,7 +102,7 @@ gender(david,male). gender(sebastian,male). gender(marcos,male). gender(thomas,m
 <!-- Button -->
 <input  class="example-button" 
         type="button" 
-        value="See all likes" 
+        value="Run" 
         id="button" 
         onClick="clickButton();" 
 />
@@ -111,3 +111,4 @@ gender(david,male). gender(sebastian,male). gender(marcos,male). gender(thomas,m
 
 <script type="text/javascript" src="tau-prolog.js"></script>
 <script type="text/javascript" src="sketch.js"></script>
+<!-- onKeyup="changeName();" -->
