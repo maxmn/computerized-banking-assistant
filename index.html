@@ -1,19 +1,48 @@
-<!-- Program -->
-<textarea class="example-textinput example-program" id="program">
-  likes(sam, salad).
-  likes(dean, pie).
-  likes(sam, apples).
-  likes(dean, whiskey).
-  </textarea>
+<link rel="stylesheet" href="mystyle.css">
+
+<!-- Textbox that holds Prolog program -->
+<textarea id="program">
+likes(sam, salad).
+likes(dean, pie).
+likes(sam, apples).
+likes(dean, whiskey).
+/***************** START OF DATABASE *****************/
+account(1,ann,td,2505).
+account(2,robert,rbc,1001).
+account(3,anthony,bmo,10503).
+account(4,george,bmo,36501).
+account(5,samantha,cibc,679).
+account(6,nicole,scotiabank,50310).
+account(7,matthew,td,21952).
+account(8,bob,cibc,1865).
+account(9,david,rbc,32012).
+account(10,sebastian,scotiabank,15996).
+account(11,bob,cibc,5632).
+account(12,marcos,rbc,306).
+account(13,thomas,rbc,798).
+account(14,lucas,rbc,241).
+account(15,ann,metro_credit_union,8900).
+</textarea>
   
-  <!-- Name -->
-  <input class="example-textinput example-goal" type="text" id="name" onKeyup="changeName();" value="" placeholder="Enter a name" />
-  
-  <!-- Button -->
-  <input class="example-button" type="button" value="See all likes" id="button" onClick="clickButton();" />
-  
-  <!-- Answers -->
-  <div class="example-result" id="result"></div>
-  
-  <script type="text/javascript" src="tau-prolog.js"></script>
-  <script type="text/javascript" src="sketch.js"></script>
+<!-- Enter name input -->
+<input  class="example-textinput example-goal" 
+        type="text" 
+        id="name" 
+        onKeyup="changeName();" 
+        value="" 
+        placeholder="Enter a name"
+/>
+
+<!-- Button -->
+<input  class="example-button" 
+        type="button" 
+        value="See all likes" 
+        id="button" 
+        onClick="clickButton();" 
+/>
+
+<!-- Results div -->
+<div class="example-result" id="result"></div>
+
+<script type="text/javascript" src="tau-prolog.js"></script>
+<script type="text/javascript" src="sketch.js"></script>
