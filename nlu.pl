@@ -1,0 +1,207 @@
+/*
+Anthony Greco   500903364   Section 2
+Nguyen Hong Duc 500910998   Section 4
+Kirill Shmakov  500890293   Section 2
+*/
+
+/***************** START OF DATABASE *****************/
+account(1,ann,td,2505).
+account(2,robert,rbc,1001).
+account(3,anthony,bmo,10503).
+account(4,george,bmo,36501).
+account(5,samantha,cibc,679).
+account(6,nicole,scotiabank,50310).
+account(7,matthew,td,21952).
+account(8,bob,cibc,1865).
+account(9,david,rbc,32012).
+account(10,sebastian,scotiabank,15996).
+account(11,bob,cibc,5632).
+account(12,marcos,rbc,306).
+account(13,thomas,rbc,798).
+account(14,lucas,rbc,241).
+account(15,ann,metro_credit_union,8900).
+
+created(1,ann,td,8,2019).
+created(2,robert,rbc,4,2016).
+created(3,anthony,bmo,6,2019).
+created(4,george,bmo,1,2015).
+created(5,samantha,cibc,10,2018).
+created(6,nicole,scotiabank,2,2020).
+created(7,matthew,td,4,2007).
+created(8,bob,cibc,8,2020).
+created(9,david,rbc,11,2017).
+created(10,sebastian,scotiabank,1,2010).
+created(11,bob,cibc,5,2006).
+created(12,marcos,rbc,12,2011).
+created(13,thomas,rbc,5,2019).
+created(14,lucas,rbc,1,2020).
+created(15,ann,metro_credit_union,3,2001).
+
+lives(ann,markham).
+lives(robert,toronto).
+lives(anthony,vaughan).
+lives(george,scarborough).
+lives(samantha,richmondhill).
+lives(nicole,woodbridge).
+lives(matthew,woodbridge).
+lives(bob,toronto).
+lives(david,brampton).
+lives(sebastian,richmondhill).
+lives(marcos,richmondhill).
+lives(thomas,seattle).
+lives(lucas,losAngeles).
+
+location(td,toronto).
+location(rbc,toronto).
+location(bmo,toronto).
+location(cibc,toronto).
+location(rbc,markham).
+location(bmo,vaughan).
+location(cibc,richmondhill).
+location(scotiabank,woodbridge).
+location(td,brampton).
+location(metro_credit_union,losAngeles).
+
+location(markham,canada).
+location(toronto,canada).
+location(vaughan,canada).
+location(richmondhill,canada).
+location(woodbridge,canada).
+location(brampton,canada).
+location(scarborough,canada).
+location(newyork,usa).
+location(boston,usa).
+location(seattle,usa).
+location(losAngeles,usa).
+
+bank(B) :- account(_,_,B,_).
+city(X) :- location(X,_), not bank(X).
+person(P) :- lives(P,_).
+country(C) :- location(_,C), not city(C).
+
+gender(ann,female). gender(samantha,female). gender(nicole,female).
+gender(robert,male). gender(anthony,male). gender(george,male). gender(matthew,male). gender(bob,male). 
+gender(david,male). gender(sebastian,male). gender(marcos,male). gender(thomas,male). gender(lucas,male).
+/***************** END OF DATABASE *****************/
+
+
+
+
+/***************** START OF LEXICON *****************/
+article(a). article(an). article(any). 
+
+common_noun(bank,X) :- bank(X).
+common_noun(city,X) :- city(X).
+common_noun(country,X) :- country(X).
+common_noun(man,X) :- gender(X,male).
+common_noun(male,X) :- gender(X,male).
+common_noun(boy,X) :- gender(X,female).
+common_noun(woman,X) :- gender(X,female).
+common_noun(female,X) :- gender(X,female).
+common_noun(girl,X) :- gender(X,female).
+common_noun(owner,X) :- account(_,X,_,_).
+common_noun(person,X) :- person(X).
+common_noun(account,X) :- account(X,_,_,_).
+common_noun(balance,X) :- account(_,_,_,X).
+common_noun(amount,X) :- account(_,_,_,X).
+common_noun(canadian,X) :- lives(X,City), location(City, canada).
+common_noun(american,X) :- lives(X,City), location(City, usa).
+
+/* account OF balance  */ preposition(of,X,Y) :- account(X,_,_,Y). 
+/* balance OF account  */ preposition(of,X,Y) :- account(Y,_,_,X). 
+/* account OF person   */ preposition(of,X,Y) :- account(X,Y,_,_).
+/* person OF account   */ preposition(of,X,Y) :- account(Y,X,_,_).
+
+/* person FROM city    */ preposition(from,X,Y) :- lives(X,Y).                        
+/* person FROM country */ preposition(from,X,Y) :- lives(X,City), location(City, Y).
+/* person FROM bank    */ preposition(from,X,Y) :- account(_,X,Y,_).   
+/* bank FROM city      */ preposition(from,X,Y) :- bank(X), location(X, Y).
+/* bank FROM country   */ preposition(from,X,Y) :- bank(X), location(X, City), location(City, Y).
+/* city FROM country   */ preposition(from,X,Y) :- city(X), location(X, Y).
+/* account FROM ban    */ preposition(from,X,Y) :- account(X,_,Y,_).
+
+/* city IN country     */ preposition(in,X,Y) :- city(X), location(X,Y).
+/* account IN bank     */ preposition(in,X,Y) :- account(X,_,Y,_).
+/* bank IN city        */ preposition(in,X,Y) :- bank(X), location(X,Y).
+/* bank IN country     */ preposition(in,X,Y) :- location(X,City), location(City, Y).
+/* person IN bank      */ preposition(in,X,Y) :- account(_,X,Y,_).
+
+/* person WITH account */ preposition(with,X,Y) :- account(Y,X,_,_).
+/* bank WITH account   */ preposition(with,X,Y) :- account(Y,_,X,_).
+/* city WITH bank      */ preposition(with,X,Y) :- city(X), location(Y,X).
+/* bank WITH person    */ preposition(with,X,Y) :- account(_,Y,X,_).
+/* account WITH balance*/ preposition(with,X,Y) :- account(X,_,_,Y).
+
+proper_noun(City) :- city(City).
+proper_noun(Country) :- country(Country).
+proper_noun(Man) :- gender(Man,male).
+proper_noun(Woman) :- gender(Woman,female).
+proper_noun(Bank) :- bank(Bank).
+
+adjective(canadian,X) :- lives(X,City), location(City,canada).
+adjective(canadian,X) :- location(X,City), location(City,canada).
+adjective(canadian,X) :- location(X,canada).
+adjective(american,X) :- lives(X,City), location(City,usa).
+adjective(american,X) :- location(X,City), location(City,usa).
+adjective(american,X) :- location(X,usa).
+adjective(female,X) :- gender(X,female).
+adjective(male,X) :- gender(X,male).
+adjective(local,X) :- lives(X,City), location(City,canada).
+adjective(local,X) :- location(X,City), location(City,canada).
+adjective(local,X) :- location(X,canada).  
+adjective(foreign,X) :- lives(X,City), location(City,usa).
+adjective(foreign,X) :- location(X,City), location(City,usa).
+adjective(foreign,X) :- location(X,usa). 
+adjective(small,X) :- account(X,_,_,B), B < 1000.
+adjective(small,B) :- account(_,_,_,B), B < 1000.
+adjective(medium,X) :- account(X,_,_,B), B >= 1000, B =< 10000.
+adjective(medium,B) :- account(_,_,_,B), B >= 1000, B =< 10000.
+adjective(large,X) :- account(X,_,_,B), B > 10000.
+adjective(large,B) :- account(_,_,_,B), B > 10000.
+adjective(old,X) :- created(X,_,_,_,Year), Year < 2020.
+adjective(recent,X) :- created(X,_,_,_,2020).
+
+/***************** END OF LEXICON *****************/
+
+
+
+
+
+
+
+
+/***************** START OF PARSER *****************/
+what(Words, Ref) :- np(Words, Ref).
+
+/* Noun phrase can be a proper name or can start with an article */
+
+np([Name],Name) :- proper_noun(Name).
+np([Art|Rest], Who) :- not Art=the, article(Art), np2(Rest, Who).
+np([the|Rest], Who) :- np2(Rest, Who), not (np2(Rest,Who2), not Who=Who2).
+
+/* If a noun phrase starts with an article, then it must be followed
+   by another noun phrase that starts either with an adjective
+   or with a common noun. */
+
+np2([Adj|Rest],Who) :- adjective(Adj,Who), np2(Rest, Who).
+np2([Noun|Rest], Who) :- common_noun(Noun, Who), mods(Rest,Who).
+
+/* Modifier(s) provide an additional specific info about nouns.
+   Modifier can be a prepositional phrase followed by none, one or more
+   additional modifiers.  */
+
+mods([], _).
+mods(Words, Who) :-
+	appendLists(Start, End, Words),
+	prepPhrase(Start, Who),	mods(End, Who).
+
+prepPhrase([between,X,and,Y], B) :- 
+   number(X), number(Y), B >= X, B =< Y.
+
+prepPhrase([Prep|Rest], Who) :-
+	preposition(Prep, Who, Ref), np(Rest, Ref).
+
+appendLists([], L, L).
+appendLists([H|L1], L2, [H|L3]) :-  appendLists(L1, L2, L3).
+
+/***************** END OF PARSER *****************/

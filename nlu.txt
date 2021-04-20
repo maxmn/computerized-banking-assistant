@@ -1,0 +1,299 @@
+/*
+Anthony Greco   500903364   Section 2
+Nguyen Hong Duc 500910998   Section 4
+Kirill Shmakov  500890293   Section 2
+*/
+
+/*************************************************************************************/
+PART 1 QUERIES
+/*************************************************************************************/
+(a) Is there an account in the Royal Bank of a man from Richmond Hill ?
+
+?-  account(_,Person,rbc,_), 
+    lives(Person,richmondhill).
+    
+    Person = marcos
+    Yes (0.00s cpu)
+
+/*************************************************************************************/
+(b) Is there a Canadian who has more than one account in CIBC?
+
+?-  account(AccNum1,Person,cibc,_), 
+    account(AccNum2,Person,cibc,_), 
+    not AccNum1=AccNum2, 
+    lives(Person, City), 
+    location(City, canada).
+
+    AccNum1 = 8
+    Person = bob
+    AccNum2 = 11
+    City = toronto
+    Yes (0.00s cpu, solution 1, maybe more)
+
+/*************************************************************************************/
+(c) What are the banks in Toronto?
+
+?-  location(Bank,toronto).
+
+    Bank = td
+    Yes (0.00s cpu, solution 1, maybe more)
+    Bank = rbc
+    Yes (0.00s cpu, solution 2, maybe more)
+    Bank = bmo
+    Yes (0.00s cpu, solution 3, maybe more)
+    Bank = cibc
+    Yes (0.00s cpu, solution 4)
+
+/*************************************************************************************/
+(d) What is a balance of an account in the Bank of Montreal of a person from Scarborough?
+
+?-  account(AccNum,Person,bmo,Amount), 
+    lives(Person,scarborough).
+
+    AccNum = 4
+    Person = george
+    Amount = 36501
+    Yes (0.00s cpu)
+
+/*************************************************************************************/
+(e) What bank keeps accounts of two distinct local persons ? (Note: for purposes of this assignment, 
+    a person is local if it is a person who lives in Canada, and foreign otherwise.)
+
+?-  account(_,Person1,Bank,_), 
+    account(_,Person2,Bank,_), 
+    not Person1=Person2,
+    lives(Person1,City1),
+    lives(Person2,City2),
+    location(City1,canada),
+    location(City2,canada).
+
+    Person1 = ann
+    Bank = td
+    Person2 = matthew
+    City1 = markham
+    City2 = woodbridge
+    Yes (0.00s cpu, solution 1, maybe more)
+
+/*************************************************************************************/
+(f) What are the cities in the USA?
+
+?-  location(City, usa).
+
+    City = newyork
+    Yes (0.00s cpu, solution 1, maybe more)
+    City = boston
+    Yes (0.02s cpu, solution 2, maybe more)
+    City = seattle
+    Yes (0.02s cpu, solution 3)
+/*************************************************************************************/
+
+
+
+
+/*************************************************************************************/
+PART 4 'WHAT' PREDICATE QUERIES FROM THE ASSIGNMENT
+/*************************************************************************************/
+(1) what([a, city, in, canada], X).
+
+    X = markham
+    Yes (0.00s cpu, solution 1, maybe more)
+    X = toronto
+    Yes (0.00s cpu, solution 2, maybe more)
+    X = vaughan
+    Yes (0.00s cpu, solution 3, maybe more)
+    X = richmondhill
+    Yes (0.00s cpu, solution 4, maybe more)
+    X = woodbridge
+    Yes (0.00s cpu, solution 5, maybe more)
+    X = brampton
+    Yes (0.00s cpu, solution 6, maybe more)
+    X = scarborough
+    Yes (0.00s cpu, solution 7, maybe more)
+    No (0.00s cpu)
+
+/*************************************************************************************/
+(2) what([the, canadian, man, with, a, large, account, in, a, local, bank], X).
+
+    No (0.00s cpu)
+    
+/*************************************************************************************/
+(3) what([any, foreign, male, person, with, a, small, account, in, a, canadian, bank], X).
+
+    X = thomas
+    Yes (0.00s cpu, solution 1, maybe more)
+    
+/*************************************************************************************/
+(4) what([a, foreign, male, person, from, losAngeles, with, a, small, account, in, rbc], X).
+
+    X = lucas
+    Yes (0.00s cpu, solution 1, maybe more)
+    
+/*************************************************************************************/
+(5) what([a, balance, of, a, large, account, in, a, local, bank], X).
+
+    X = 10503
+    Yes (0.00s cpu, solution 1, maybe more)
+    
+/*************************************************************************************/
+(6) what([any, local, bank, with, an, account, of, a, man, from, usa], X).
+
+    X = rbc
+    Yes (0.00s cpu, solution 1, maybe more)
+    
+/*************************************************************************************/
+(7) what([an, owner, from, canada, of, a, large, account], X).
+
+    X = anthony
+    Yes (0.00s cpu, solution 1, maybe more)
+    X = george
+    Yes (0.00s cpu, solution 2, maybe more)
+    X = nicole
+    Yes (0.00s cpu, solution 3, maybe more)
+    X = matthew
+    Yes (0.00s cpu, solution 4, maybe more)
+    X = david
+    Yes (0.00s cpu, solution 5, maybe more)
+    X = sebastian
+    Yes (0.02s cpu, solution 6, maybe more)
+    No (0.03s cpu)
+
+/*************************************************************************************/
+(8) what([a, woman, from, markham, with, a, medium, account], X).
+
+    X = ann
+    Yes (0.00s cpu, solution 1, maybe more)
+
+/*************************************************************************************/
+(9) what([a, bank, in, canada, with, a, small, account, of, a, foreign, person], X).
+
+    X = rbc
+    Yes (0.00s cpu, solution 1, maybe more)
+    
+/*************************************************************************************/
+(10) what([a, medium, account, in, a, canadian, bank, with, a, small, account, of, an, american], X).
+
+    X = 2
+    Yes (0.00s cpu, solution 1, maybe more)
+    
+/*************************************************************************************/
+(11) what([the, balance, of, the, medium, account, in, metro_credit_union, of, a, woman, from, markham], X).
+
+    X = 8900
+    Yes (0.00s cpu, solution 1, maybe more)
+    
+/*************************************************************************************/
+(12) what([a,balance,of,an,account,of,an,american,with,a,small,account,in, a,local,bank,with,a,large,account], X).
+
+    X = 798
+    Yes (0.00s cpu, solution 1, maybe more)
+
+/*************************************************************************************/
+(13) what([the, balance, of, the, medium, account, in, metro_credit_union, of, a, woman, from, markham], X).
+
+    X = 8900
+    Yes (0.00s cpu, solution 1, maybe more)
+    
+/*************************************************************************************/
+
+
+
+
+/*************************************************************************************/
+PART 4 'WHAT' PREDICATE OUR QUERIES
+/*************************************************************************************/
+?- what([an, account, in, td], X).
+X = 1
+Yes (0.00s cpu, solution 1, maybe more)
+
+?- what([the, account, in, td], X).
+No (0.00s cpu)
+
+?- what([a, small, account, in, a, canadian, bank, of, a, man, from, canada], X).
+X = 12
+Yes (0.00s cpu, solution 1, maybe more)
+
+?- what([a, small, account, in, a, canadian, bank, with, a, balance, between, 1000, and, 5000], X).
+X = 1
+Yes (0.00s cpu, solution 1, maybe more)
+
+?- what([the, large, account, in, a, canadian, bank, with, a, balance, between, 35000, and, 50000], X).
+X = 4
+Yes (0.00s cpu, solution 1, maybe more)
+
+?- what([a, balance, of, a, large, account, in, a, canadian, bank, of, a, man, from, toronto], X).
+No (0.00s cpu)
+
+?- what([a, balance, of, a, medium, account, in, a, canadian, bank, of, a, man, from, toronto], X).
+X = 1001
+Yes (0.00s cpu, solution 1, maybe more)
+
+?- what([an, account, in, a, bank, of, a, woman], X).
+X = 1
+Yes (0.00s cpu, solution 1, maybe more)
+
+?- what([any, account, in, a, bank, of, a, man], X).
+X = 2
+Yes (0.00s cpu, solution 1, maybe more)
+
+?- what([any, account, in, a, bank, of, a, man, from, losAngeles], X).
+X = 14
+Yes (0.00s cpu, solution 1, maybe more)
+
+?- what([an, old, account, in, a, bank, of, a, man, from, canada], X).
+X = 2
+Yes (0.00s cpu, solution 1, maybe more)
+
+?- what([the, recent, account, in, a, local, bank, of, a, man, from, canada], X).
+X = 8
+Yes (0.00s cpu, solution 1, maybe more)
+
+?- what([an, account, in, a, foreign, bank], X).
+X = 15
+Yes (0.00s cpu, solution 1, maybe more)
+
+?- what([the, account, of, a, man], X).
+No (0.00s cpu)
+
+?- what([the, man, from, brampton], X).
+X = david
+Yes (0.00s cpu, solution 1, maybe more)
+
+?- what([the, owner, of, an, account, from, brampton], X).
+X = david
+Yes (0.00s cpu, solution 1, maybe more)
+
+?- what([an, owner, of, an, account, from, losAngeles], X).
+X = lucas
+Yes (0.00s cpu, solution 1, maybe more)
+
+?- what([a, canadian, from, losAngeles], X).
+No (0.00s cpu)
+
+?- what([the, canadian, from, markham], X).
+X = ann
+Yes (0.00s cpu, solution 1, maybe more)
+
+?- what([an, american, with, an, account, in, rbc], X).
+X = thomas
+Yes (0.00s cpu, solution 1, maybe more)
+
+?- what([an, account, with, a, balance, between, 500, and, 1250, of, a, person, in, rbc], X).
+X = 2
+Yes (0.00s cpu, solution 1, maybe more)
+
+?- what([a, account, with, a, balance, between, 500, and, 5000, of, a, woman, in, cibc], X).
+X = 5
+Yes (0.00s cpu, solution 1, maybe more)
+
+?- what([an,account,with,a,balance,between,20000,and,100000,of,a,canadian,man], X).
+X = 4
+Yes (0.00s cpu, solution 1, maybe more)
+X = 7
+Yes (0.00s cpu, solution 2, maybe more)
+X = 9
+Yes (0.00s cpu, solution 3, maybe more)
+No (0.00s cpu)
+
+?- what([an,account,with,a,balance, between, 100, and, 1000,of,a,female], X)
+X = 5
+Yes (0.00s cpu, solution 1, maybe more)
