@@ -1,11 +1,9 @@
 <link rel="stylesheet" href="mystyle.css">
 
+<div class="flex_div">
+
 <!-- Textbox that holds Prolog program -->
 <textarea id="program">
-likes(sam, salad).
-likes(dean, pie).
-likes(sam, apples).
-likes(dean, whiskey).
 /***************** START OF DATABASE *****************/
 account(1,ann,td,2505).
 account(2,robert,rbc,1001).
@@ -22,16 +20,84 @@ account(12,marcos,rbc,306).
 account(13,thomas,rbc,798).
 account(14,lucas,rbc,241).
 account(15,ann,metro_credit_union,8900).
+
+created(1,ann,td,8,2019).
+created(2,robert,rbc,4,2016).
+created(3,anthony,bmo,6,2019).
+created(4,george,bmo,1,2015).
+created(5,samantha,cibc,10,2018).
+created(6,nicole,scotiabank,2,2020).
+created(7,matthew,td,4,2007).
+created(8,bob,cibc,8,2020).
+created(9,david,rbc,11,2017).
+created(10,sebastian,scotiabank,1,2010).
+created(11,bob,cibc,5,2006).
+created(12,marcos,rbc,12,2011).
+created(13,thomas,rbc,5,2019).
+created(14,lucas,rbc,1,2020).
+created(15,ann,metro_credit_union,3,2001).
+
+lives(ann,markham).
+lives(robert,toronto).
+lives(anthony,vaughan).
+lives(george,scarborough).
+lives(samantha,richmondhill).
+lives(nicole,woodbridge).
+lives(matthew,woodbridge).
+lives(bob,toronto).
+lives(david,brampton).
+lives(sebastian,richmondhill).
+lives(marcos,richmondhill).
+lives(thomas,seattle).
+lives(lucas,losAngeles).
+
+location(td,toronto).
+location(rbc,toronto).
+location(bmo,toronto).
+location(cibc,toronto).
+location(rbc,markham).
+location(bmo,vaughan).
+location(cibc,richmondhill).
+location(scotiabank,woodbridge).
+location(td,brampton).
+location(metro_credit_union,losAngeles).
+
+location(markham,canada).
+location(toronto,canada).
+location(vaughan,canada).
+location(richmondhill,canada).
+location(woodbridge,canada).
+location(brampton,canada).
+location(scarborough,canada).
+location(newyork,usa).
+location(boston,usa).
+location(seattle,usa).
+location(losAngeles,usa).
+
+bank(B) :- account(_,_,B,_).
+city(X) :- location(X,_), not bank(X).
+person(P) :- lives(P,_).
+country(C) :- location(_,C), not city(C).
+
+gender(ann,female). gender(samantha,female). gender(nicole,female).
+gender(robert,male). gender(anthony,male). gender(george,male). gender(matthew,male). gender(bob,male). 
+gender(david,male). gender(sebastian,male). gender(marcos,male). gender(thomas,male). gender(lucas,male).
+/***************** END OF DATABASE *****************/
 </textarea>
-  
+
+<div id="name_and_results">
 <!-- Enter name input -->
-<input  class="example-textinput example-goal" 
-        type="text" 
-        id="name" 
-        onKeyup="changeName();" 
-        value="" 
-        placeholder="Enter a name"
-/>
+  <input  class="example-textinput example-goal" 
+          type="text" 
+          id="name" 
+          onKeyup="changeName();" 
+          value="" 
+          placeholder="Enter a name"
+  />
+
+  <!-- Results div -->
+  <div class="example-result" id="result"></div>
+</div>
 
 <!-- Button -->
 <input  class="example-button" 
@@ -41,8 +107,7 @@ account(15,ann,metro_credit_union,8900).
         onClick="clickButton();" 
 />
 
-<!-- Results div -->
-<div class="example-result" id="result"></div>
+</div> <!-- Close Flexbox -->
 
 <script type="text/javascript" src="tau-prolog.js"></script>
 <script type="text/javascript" src="sketch.js"></script>
