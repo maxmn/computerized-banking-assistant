@@ -6,6 +6,7 @@
 <link rel="stylesheet" href="codemirror/codemirror.css">
 <script src="codemirror/codemirror.js"></script>
 <link rel="stylesheet" href="cobalt.css">
+<script src="codemirror/javascript.js"></script>
 
 <div class="flex_div">
 <!-- Textbox that holds Prolog program -->
@@ -274,7 +275,7 @@ appendLists([H|L1], L2, [H|L3]) :-  appendLists(L1, L2, L3).
             placeholder="Enter an English sentence query."
             autocomplete="off"
             onKeyup="english_query_keypress();"
-            onfocus="setbg('#e5fff3', 'english_query_textinput');" 
+            onfocus="setbg('#dbffef', 'english_query_textinput');" 
             onblur="setbg('white', 'english_query_textinput')"
     />
 
@@ -295,7 +296,7 @@ appendLists([H|L1], L2, [H|L3]) :-  appendLists(L1, L2, L3).
             placeholder="Enter a Prolog query."
             autocomplete="off"
             onKeyup="prolog_query_keypress();"
-            onfocus="setbg('#e5fff3', 'prolog_query_textinput');" 
+            onfocus="setbg('#dbffef', 'prolog_query_textinput');" 
             onblur="setbg('white', 'prolog_query_textinput')"
     />
   
@@ -310,16 +311,18 @@ appendLists([H|L1], L2, [H|L3]) :-  appendLists(L1, L2, L3).
 
   <!-- Results div -->
   <div class="example-result" id="result"></div>
-</div>
+
+</div> <!-- Close query_div -->
 
 
-</div> <!-- Close Flexbox -->
+</div> <!-- Close flex_div -->
 
 <!-- styling for textarea-->
 <script>
   var editor = CodeMirror.fromTextArea(document.getElementById("program"), {
     lineNumbers: true,
-    theme: "cobalt"
+    theme: "cobalt",
+    mode: "javascript"
   });
   editor.setSize("40%", "93%");
 </script>

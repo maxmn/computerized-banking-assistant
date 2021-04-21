@@ -11,7 +11,7 @@ body {
 }
 
 #query_div {
-   width: 40%;
+   width: 50%;
    display: flex;
    flex-direction: column;
    margin: 30px;
@@ -22,7 +22,7 @@ body {
  }
 
 input[type="text"] {
-   width: 250px;
+   width: 50%;
    height: 23px;
    margin: 5px;
 }
@@ -36,10 +36,10 @@ ul {
 }
 
 .button {
+   height: 23px;
    background-color: #00233f;
    border: none;
    color: white;
-   /* padding: 16px 32px; */
    padding: 4px 8px;
    text-align: center;
    font-size: 16px;
