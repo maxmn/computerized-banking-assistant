@@ -129,6 +129,8 @@ common_noun(american,X) :- lives(X,City), location(City, usa).
 /* bank IN city        */ preposition(in,X,Y) :- bank(X), location(X,Y).
 /* bank IN country     */ preposition(in,X,Y) :- location(X,City), location(City, Y).
 /* person IN bank      */ preposition(in,X,Y) :- account(_,X,Y,_).
+/* person IN city      */ preposition(in,X,Y) :- lives(X,Y).
+/* person IN country   */ preposition(in,X,Y) :- lives(X,City), location(City, Y).
 
 /* person WITH account */ preposition(with,X,Y) :- account(Y,X,_,_).
 /* person WITH balance */ preposition(with,X,Y) :- account(_,X,_,Y).
