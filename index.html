@@ -234,11 +234,12 @@ appendLists([H|L1], L2, [H|L3]) :-  appendLists(L1, L2, L3).
             value="" 
             placeholder="Enter an English sentence query."
             autocomplete="off"
+            onKeyup="english_query_keypress();"
     />
 
     <!-- English Button -->
-    <input  class="example-button" 
-    type="button" 
+    <input
+    type="english_button" 
     value="Run" 
     id="button" 
     onClick="click_english_button();" 
@@ -252,11 +253,12 @@ appendLists([H|L1], L2, [H|L3]) :-  appendLists(L1, L2, L3).
             value="" 
             placeholder="Enter a Prolog query."
             autocomplete="off"
+            onKeyup="prolog_query_keypress();"
     />
   
     <!-- Prolog Button -->
-    <input  class="example-button" 
-    type="button" 
+    <input
+    type="prolog_button" 
     value="Run" 
     id="button" 
     onClick="click_prolog_button();" 

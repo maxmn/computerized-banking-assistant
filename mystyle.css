@@ -10,14 +10,10 @@ textarea {
    height: 100%;
  }
 
- #prolog_query_textinput, #english_query_textinput {
+input[type="text"] {
    width: 250px;
    height: 23px;
    margin: 5px;
-}
-
-#button {
-   height: 23px;
 }
 
 #result {

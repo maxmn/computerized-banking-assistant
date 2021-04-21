@@ -172,43 +172,46 @@ function sentence_query(query) {
 ***  Events
 ***************************************************************************************************************/
 
-// onClick #button
-function clickButton() {
-  // Get person
-  var name = document.getElementById("name").value;
-  name = name != "" ? name : "Y";
-  sentence_query(name);
-}
-
 function click_english_button() {
   var txt = document.getElementById("english_query_textinput").value;
+  txt != "" ? txt : "Y";
   sentence_query(txt);
 }
 
 function click_prolog_button() {
   var txt = document.getElementById("prolog_query_textinput").value;
+  txt != "" ? txt : "Y";
   prolog_query(txt);
 }
 
-// Enter is pressed while in query textbox
-function enter_key_pressed() {
+// Key pressed while in english query input textbox
+function english_query_keypress() {
   english_query_input = document.getElementById("english_query_textinput");
-  prolog_query_input = document.getElementById("prolog_query_textinput");
 
-  english_query_input.onkeyup = function(e){
-    if(e.keyCode == 13){    // If key == Enter
-      click_english_button();
-    }
-  }
-
-  prolog_query_input.onkeyup = function(e){
-    if(e.keyCode == 13){    // If key == Enter
-      click_prolog_button();
+  if (english_query_input) {
+    english_query_input.onkeyup = function(e){
+      if(e.keyCode == 13){    // If key == Enter
+        click_english_button();
+      }
     }
   }
 }
 
-enter_key_pressed();
+// Key pressed while in prolog query input textbox
+function prolog_query_keypress() {
+  prolog_query_input = document.getElementById("prolog_query_textinput");
+
+  if (prolog_query_input) {
+    prolog_query_input.onkeyup = function(e){
+      if(e.keyCode == 13){    // If key == Enter
+        click_prolog_button();
+      }
+    }
+  }
+}
+
+english_query_keypress();
+prolog_query_keypress();
 
 /**************************************************************************************************************
 ***************************************************************************************************************
