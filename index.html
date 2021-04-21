@@ -2,12 +2,15 @@
 <script type="text/javascript" src="tau-prolog.js"></script>
 <script type="text/javascript" src="sketch.js"></script>
 
+<!-- Create a CodeMirror instance -->
+<link rel="stylesheet" href="codemirror/codemirror.css">
+<script src="codemirror/codemirror.js"></script>
+<link rel="stylesheet" href="cobalt.css">
+
 <div class="flex_div">
 <!-- Textbox that holds Prolog program -->
 <textarea id="program" 
-          spellcheck="false" 
-          onfocus="setbg('#e5fff3', 'program');" 
-          onblur="setbg('white', 'program')">
+          spellcheck="false">
 /*****************************************************/
 /** 'not' must be replaced with '\+' for Tau Prolog **/
 /*****************************************************/
@@ -117,6 +120,7 @@ common_noun(owner,X) :- account(_,X,_,_).
 common_noun(person,X) :- person(X).
 common_noun(account,X) :- account(X,_,_,_).
 common_noun(balance,X) :- account(_,_,_,X).
+common_noun(money,X) :- account(_,_,_,X).
 common_noun(amount,X) :- account(_,_,_,X).
 common_noun(canadian,X) :- lives(X,City), location(City, canada).
 common_noun(american,X) :- lives(X,City), location(City, usa).
@@ -183,6 +187,7 @@ adjective(greatest,X) :- adjective(largest,X).
 adjective(highest,X) :- adjective(largest,X).
 adjective(largest,X) :- account(X,_,_,B), \+ (account(X2,_,_,B2), \+ X=X2,  B2 > B).
 adjective(largest,X) :- account(_,_,_,X), \+ (account(_,_,_,X2), \+ X=X2,  X2 > X).
+adjective(largest,X) :- account(_,X,_,B), \+ (account(_,X2,_,B2), \+ X=X2,  B2 > B).
 adjective(smallest,X) :- account(X,_,_,B), \+ (account(X2,_,_,B2), \+ X=X2,  B2 < B).
 adjective(smallest,X) :- account(_,_,_,X), \+ (account(_,_,_,X2), \+ X=X2,  X2 < X).
 
@@ -232,6 +237,34 @@ appendLists([H|L1], L2, [H|L3]) :-  appendLists(L1, L2, L3).
 </textarea>
 
 <div id="query_div">
+  <p>
+  Prolog is a logic programming language associated with artificial intelligence and computational linguistics.
+  </p>
+  <p>
+  The textbox on the left is Prolog code and is fully customizable. It contains (1) a database containing facts about the world, 
+  (2) a lexicon defining the meanings of words, and (3) a parser to identify how an English sentence is constructed.
+  </p>
+  <p>
+  The top textbox takes an English sentence as input and tries to return an answer. Some examples are:
+  </p>
+  <ul>
+  <li>a canadian man with a large account</li>
+  <li>the largest balance</li>
+  <li>the balance of an account from td</li>
+  <li>a balance between 2000 and 10000</li>
+  <li>any account with a balance between 20000 and 40000</li>
+  </ul>
+  <p>
+  The bottom textbox takes raw Prolog as input and tries to solve for X. Some examples are:
+  </p>
+  <ul>
+  <li>account(_,X,rbc,_).</li>
+  <li>location(X, canada).</li>
+  <li>gender(X, male).</li>
+  <li>gender(anthony, X).</li>
+  <li>lives(X, richmondhill).</li>
+  </ul>
+  
   <!-- English query -->
   <div>
     <input  spellcheck="false" 
@@ -281,3 +314,12 @@ appendLists([H|L1], L2, [H|L3]) :-  appendLists(L1, L2, L3).
 
 
 </div> <!-- Close Flexbox -->
+
+<!-- styling for textarea-->
+<script>
+  var editor = CodeMirror.fromTextArea(document.getElementById("program"), {
+    lineNumbers: true,
+    theme: "cobalt"
+  });
+  editor.setSize("40%", "93%");
+</script>

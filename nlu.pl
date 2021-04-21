@@ -107,6 +107,7 @@ common_noun(owner,X) :- account(_,X,_,_).
 common_noun(person,X) :- person(X).
 common_noun(account,X) :- account(X,_,_,_).
 common_noun(balance,X) :- account(_,_,_,X).
+common_noun(money,X) :- account(_,_,_,X).
 common_noun(amount,X) :- account(_,_,_,X).
 common_noun(canadian,X) :- lives(X,City), location(City, canada).
 common_noun(american,X) :- lives(X,City), location(City, usa).
@@ -173,6 +174,7 @@ adjective(greatest,X) :- adjective(largest,X).
 adjective(highest,X) :- adjective(largest,X).
 adjective(largest,X) :- account(X,_,_,B), \+ (account(X2,_,_,B2), \+ X=X2,  B2 > B).
 adjective(largest,X) :- account(_,_,_,X), \+ (account(_,_,_,X2), \+ X=X2,  X2 > X).
+adjective(largest,X) :- account(_,X,_,B), \+ (account(_,X2,_,B2), \+ X=X2,  B2 > B).
 adjective(smallest,X) :- account(X,_,_,B), \+ (account(X2,_,_,B2), \+ X=X2,  B2 < B).
 adjective(smallest,X) :- account(_,_,_,X), \+ (account(_,_,_,X2), \+ X=X2,  X2 < X).
 
