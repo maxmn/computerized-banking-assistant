@@ -18,8 +18,8 @@ String.prototype.format = function () {
  *          lexicon + parser Prolog code in order to understand sentences
  */
 function get_prolog_code() {
-  database = document.getElementById("program").value;
-  return database  
+  prolog_code = document.getElementById("program").value;
+  return prolog_code  
 }
 
 /**************************************************************************************************************
@@ -171,6 +171,10 @@ function sentence_query(query) {
 /**************************************************************************************************************
 ***  Events
 ***************************************************************************************************************/
+
+function setbg(color, id) {
+  document.getElementById(id).style.background=color
+}
 
 function click_english_button() {
   var txt = document.getElementById("english_query_textinput").value;

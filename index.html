@@ -4,7 +4,10 @@
 
 <div class="flex_div">
 <!-- Textbox that holds Prolog program -->
-<textarea id="program" spellcheck="false">
+<textarea id="program" 
+          spellcheck="false" 
+          onfocus="setbg('#e5fff3', 'program');" 
+          onblur="setbg('white', 'program')">
 /*****************************************************/
 /** 'not' must be replaced with '\+' for Tau Prolog **/
 /*****************************************************/
@@ -136,6 +139,8 @@ common_noun(american,X) :- lives(X,City), location(City, usa).
 /* bank IN city        */ preposition(in,X,Y) :- bank(X), location(X,Y).
 /* bank IN country     */ preposition(in,X,Y) :- location(X,City), location(City, Y).
 /* person IN bank      */ preposition(in,X,Y) :- account(_,X,Y,_).
+/* person IN city      */ preposition(in,X,Y) :- lives(X,Y).
+/* person IN country   */ preposition(in,X,Y) :- lives(X,City), location(City, Y).
 
 /* person WITH account */ preposition(with,X,Y) :- account(Y,X,_,_).
 /* person WITH balance */ preposition(with,X,Y) :- account(_,X,_,Y).
@@ -175,6 +180,7 @@ adjective(old,X) :- created(X,_,_,_,Year), Year < 2020.
 adjective(recent,X) :- created(X,_,_,_,2020).
 adjective(biggest,X) :- adjective(largest,X).
 adjective(greatest,X) :- adjective(largest,X).
+adjective(highest,X) :- adjective(largest,X).
 adjective(largest,X) :- account(X,_,_,B), \+ (account(X2,_,_,B2), \+ X=X2,  B2 > B).
 adjective(largest,X) :- account(_,_,_,X), \+ (account(_,_,_,X2), \+ X=X2,  X2 > X).
 adjective(smallest,X) :- account(X,_,_,B), \+ (account(X2,_,_,B2), \+ X=X2,  B2 < B).
@@ -235,13 +241,15 @@ appendLists([H|L1], L2, [H|L3]) :-  appendLists(L1, L2, L3).
             placeholder="Enter an English sentence query."
             autocomplete="off"
             onKeyup="english_query_keypress();"
+            onfocus="setbg('#e5fff3', 'english_query_textinput');" 
+            onblur="setbg('white', 'english_query_textinput')"
     />
 
     <!-- English Button -->
     <input
     type="english_button" 
     value="Run" 
-    id="button" 
+    class="button" 
     onClick="click_english_button();" 
     />
   </div>
@@ -254,13 +262,15 @@ appendLists([H|L1], L2, [H|L3]) :-  appendLists(L1, L2, L3).
             placeholder="Enter a Prolog query."
             autocomplete="off"
             onKeyup="prolog_query_keypress();"
+            onfocus="setbg('#e5fff3', 'prolog_query_textinput');" 
+            onblur="setbg('white', 'prolog_query_textinput')"
     />
   
     <!-- Prolog Button -->
     <input
     type="prolog_button" 
     value="Run" 
-    id="button" 
+    class="button" 
     onClick="click_prolog_button();" 
     />
   </div>

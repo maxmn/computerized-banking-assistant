@@ -168,6 +168,7 @@ adjective(old,X) :- created(X,_,_,_,Year), Year < 2020.
 adjective(recent,X) :- created(X,_,_,_,2020).
 adjective(biggest,X) :- adjective(largest,X).
 adjective(greatest,X) :- adjective(largest,X).
+adjective(highest,X) :- adjective(largest,X).
 adjective(largest,X) :- account(X,_,_,B), \+ (account(X2,_,_,B2), \+ X=X2,  B2 > B).
 adjective(largest,X) :- account(_,_,_,X), \+ (account(_,_,_,X2), \+ X=X2,  X2 > X).
 adjective(smallest,X) :- account(X,_,_,B), \+ (account(X2,_,_,B2), \+ X=X2,  B2 < B).
